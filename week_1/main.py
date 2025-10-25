@@ -3,24 +3,11 @@ from typing import Union
 from groq import Groq
 from openai import OpenAI
 from app_config import env_config
-from model_util import is_groq_model
+from model_util import is_groq_model, SUPPORTED_GROQ_MODELS, SUPPORTED_OPENAI_MODELS
 
 
 class LLMChatApp:
     """Main application class to interact with Groq and OpenAI APIs."""
-    
-    SUPPORTED_GROQ_MODELS = [
-        "llama-3.1-8b-instant",
-        "llama-3.3-70b-versatile",
-        "openai/gpt-oss-120b",
-        "openai/gpt-oss-20b"
-    ]
-    SUPPORTED_OPENAI_MODELS = [
-        "gpt-4o-mini",
-        "gpt-5-2025-08-07",
-        "gpt-5-mini-2025-08-07",
-        "gpt-5-nano-2025-08-07"
-    ]
     
     def __init__(
         self,
@@ -41,7 +28,7 @@ class LLMChatApp:
         """
         self.__model = model
         
-        if self.__model in self.SUPPORTED_GROQ_MODELS:
+        if self.__model in SUPPORTED_GROQ_MODELS:
             self.__api_key = api_key or env_config.groq_api_key
             
             if not self.__api_key:
@@ -49,7 +36,7 @@ class LLMChatApp:
             
             self.__client = Groq(api_key=self.__api_key)
             
-        elif self.__model in self.SUPPORTED_OPENAI_MODELS:
+        elif self.__model in SUPPORTED_OPENAI_MODELS:
             self.__api_key = api_key or env_config.openai_api_key
             
             if not self.__api_key:
@@ -168,7 +155,7 @@ if __name__ == "__main__":
     print("Type 'exit' or 'quit' to end the chat.")
     
     try:
-        model = input(f"\nEnter the model. Press Enter to skip (default: {LLMChatApp.SUPPORTED_GROQ_MODELS[0]}): ").strip()
+        model = input(f"\nEnter the model. Press Enter to skip (default: {SUPPORTED_GROQ_MODELS[0]}): ").strip()
         if model.lower() in EXIT_COMMANDS:
             print(EXIT_MESSAGE)
             sys.exit(0)
@@ -189,7 +176,7 @@ if __name__ == "__main__":
             sys.exit(0)
 
         app = LLMChatApp(
-            model=model or f"{LLMChatApp.SUPPORTED_GROQ_MODELS[0]}",
+            model=model or f"{SUPPORTED_GROQ_MODELS[0]}",
             model_name=model_name or "Tidal",
             system_prompt=system_prompt or None,
             api_key=api_key

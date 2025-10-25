@@ -3,7 +3,7 @@ Streamlit app for interacting with the LLMChatApp.
 """
 import streamlit as st
 from main import LLMChatApp
-from model_util import is_groq_model
+from model_util import is_groq_model, SUPPORTED_GROQ_MODELS, SUPPORTED_OPENAI_MODELS
 
 # Page Configuration
 st.set_page_config(
@@ -32,7 +32,7 @@ with st.sidebar:
     # Model Selection
     model = st.selectbox(
         "Select Model",
-        options=LLMChatApp.SUPPORTED_GROQ_MODELS + LLMChatApp.SUPPORTED_OPENAI_MODELS,
+        options=SUPPORTED_GROQ_MODELS + SUPPORTED_OPENAI_MODELS,
         help="Choose a Groq or OpenAI model to use."
     )
     
