@@ -50,7 +50,7 @@ class LLMChatApp:
         self.__set_model_name(model_name=model_name)
         self.__set_system_prompt(system_prompt=system_prompt)
         
-    def chat(self, user_message: str, temperature: float=0.5, max_tokens: int=1024) -> str | None:
+    def chat(self, user_message: str, temperature: float=0.5, max_tokens: int=1024) -> str:
         """
         Engage in a chat with the LLM.
 
@@ -193,4 +193,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print(EXIT_MESSAGE)
         sys.exit(0)
+    except Exception as e:
+        print(f"Error during response generation: {str(e)}")
         

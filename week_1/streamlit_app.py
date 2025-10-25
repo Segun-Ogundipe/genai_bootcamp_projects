@@ -2,6 +2,7 @@
 Streamlit app for interacting with the LLMChatApp.    
 """
 import streamlit as st
+from streamlit_chat import message
 from main import LLMChatApp
 from model_util import is_groq_model, SUPPORTED_GROQ_MODELS, SUPPORTED_OPENAI_MODELS
 
@@ -100,8 +101,10 @@ with st.sidebar:
             
 # Display chat messages from history
 for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+    if msg["role"] == "user":
+        message(msg["content"], is_user=True)
+    else:
+        message(msg["content"])
 
 # Chat input
 if prompt := st.chat_input("Ask anything..."):
@@ -109,7 +112,7 @@ if prompt := st.chat_input("Ask anything..."):
         st.error("Please initialize the LLM Chat App first.", icon="‼️")
     else:
         # Display user message
-        st.chat_message("user").markdown(prompt)
+        message(prompt, is_user=True)
         st.session_state.messages.append(
             {
                 "role": "user",
@@ -118,21 +121,20 @@ if prompt := st.chat_input("Ask anything..."):
         )
         
         # Get assistant response
-        with st.chat_message("assistant"):
-            with st.spinner("Thinking..."):
-                try:
-                    response = st.session_state.llm_app.chat(
-                        user_message=prompt,
-                        temperature=temperature,
-                        max_tokens=max_tokens
-                    )
-                    
-                    st.markdown(response)
-                    st.session_state.messages.append(
-                        {
-                            "role": "assistant",
-                            "content": f"{response}"
-                        }
-                    )
-                except Exception as e:
-                    st.error(f"Error during response generation: {str(e)}")
+        with st.spinner("Thinking..."):
+            try:
+                response = st.session_state.llm_app.chat(
+                    user_message=prompt,
+                    temperature=temperature,
+                    max_tokens=max_tokens
+                )
+                
+                message(response)
+                st.session_state.messages.append(
+                    {
+                        "role": "assistant",
+                        "content": f"{response}"
+                    }
+                )
+            except Exception as e:
+                st.error(f"Error during response generation: {str(e)}")
