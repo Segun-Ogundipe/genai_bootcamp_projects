@@ -43,3 +43,11 @@ Copy the environment file template and provide the neccessary values for the key
 ```bash
 cp .env.example .env
 ```
+
+---
+
+## 🗄️ Projects
+
+|    Week  |   Link   |
+| :------- | :------: |
+| 1        | [README](./week_1/README.md) |
