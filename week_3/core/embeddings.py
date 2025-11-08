@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from langchain_core.documents import Document
-from langchain_core.embeddings import BaseEmbeddings
+from langchain_core.embeddings import Embeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import OpenAIEmbeddings
 
@@ -42,7 +42,7 @@ class EmbeddingClient:
 
         return api_key
 
-    def __initialize_embedder(self) -> BaseEmbeddings:
+    def __initialize_embedder(self) -> Embeddings:
         """Create the embedding model instance based on the provider and model_name"""
         if self.provider == "openai":
             return OpenAIEmbeddings(model=self.model_name, api_key=self.__api_key)
