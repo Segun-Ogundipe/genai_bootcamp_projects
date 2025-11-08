@@ -1,3 +1,8 @@
+SUPPORTED_LLM_PROVIDERS = [
+        "openai",
+        "groq",
+]
+
 SUPPORTED_GROQ_MODELS = [
         "llama-3.1-8b-instant",
         "llama-3.3-70b-versatile",
