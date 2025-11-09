@@ -1,0 +1,30 @@
+# LangChain dependencies
+langchain
+langchain-classic
+langchain-community
+langchain-core
+langchain-groq
+langchain-huggingface
+langchain-openai
+langchain-text-splitters
+
+sentence_transformers
+
+# Vector database
+chromadb
+langchain-chroma
+
+# Environment management
+python-dotenv
+
+# News article processing
+newspaper3k
+lxml_html_clean
+
+# PDF processing
+pypdf
+unstructured
+markdown
+
+# YouTube processing
+youtube-transcript-api
