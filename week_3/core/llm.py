@@ -1,6 +1,6 @@
 from typing import Optional
 
-from langchain_classic.chains import ConversationRetrievalChain
+from langchain_classic.chains.conversational_retrieval.base import ConversationalRetrievalChain
 from langchain_classic.memory import ConversationBufferMemory
 from langchain_community.vectorstores import Chroma
 from langchain_core.language_models import BaseChatModel
@@ -71,7 +71,7 @@ class LLMClient:
         """Create the QA chain with prompt template"""
         memory = ConversationBufferMemory(return_messages=True, memory_key="chat_history")
 
-        return ConversationRetrievalChain(
+        return ConversationalRetrievalChain.from_llm(
             llm=self.llm,
             retriever=self.store.as_retriever(),
             memory=memory
