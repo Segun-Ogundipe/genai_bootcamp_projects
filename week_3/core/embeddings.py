@@ -6,7 +6,11 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import OpenAIEmbeddings
 
 import config.settings as env_config
-from utils.model_util import SUPPORTED_EMBEDDING_PROVIDERS, SUPPORTED_OPENAI_EMBEDDING_MODELS, SUPPORTED_HUGGINGFACE_EMBEDDING_MODELS
+from utils.model_util import (
+    SUPPORTED_EMBEDDING_PROVIDERS,
+    SUPPORTED_OPENAI_EMBEDDING_MODELS,
+    SUPPORTED_HUGGINGFACE_EMBEDDING_MODELS
+)
 
 class EmbeddingClient:
     def __init__(
