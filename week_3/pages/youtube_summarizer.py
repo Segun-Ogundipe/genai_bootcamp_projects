@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_chat import message
 
-from summarizer.news_summarizer.summarizer import NewsSummarizer
+from summarizer.youtube_summarizer.summarizer import YoutubeSummarizer
 from utils.model_util import (
     SUPPORTED_EMBEDDING_PROVIDERS,
     SUPPORTED_LLM_PROVIDERS,
@@ -16,8 +16,8 @@ voice_processor = VoiceProcessor()
 
 # Page Configuration
 st.set_page_config(
-    page_title="Article Summarizer",
-    page_icon="📰",
+    page_title="YouTube Video Summarizer",
+    page_icon="📺",
     layout="centered",
     initial_sidebar_state="auto"
 )
@@ -30,23 +30,23 @@ if "summarizer" not in st.session_state:
     st.session_state.summarizer = None
     
 # Title and Description
-st.title("Article Summarizer")
+st.title("YouTube Video Summarizer 📺")
 st.markdown("Please configure the llm and embedding model in the sidebar. You can get one at https://console.groq.com/ for Groq API keys or https://platform.openai.com/account/api-keys for OpenAI API keys.")
-with st.expander("Summarize News Article", expanded=True):
-    st.markdown("Please enter the news article URL to get started.")
-    news_article_url = st.text_input("News Article URL", placeholder="https://www.example.com")
+with st.expander("Summarize YouTube Video", expanded=True):
+    st.markdown("Please enter the YouTube video URL to get started.")
+    youtube_video_url = st.text_input("YouTube Video URL", placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     summary_type = st.selectbox("Summary Type", options=["Detailed", "Concise"])
-    if st.button("Summarize News Article"):
-        with st.spinner("Summarizing news article..."):
+    if st.button("Summarize YouTube Video"):
+        with st.spinner("Summarizing YouTube video..."):
             try:
-                summary = st.session_state.summarizer.summarize_article(news_article_url, summary_type)
+                summary = st.session_state.summarizer.summarize_video(youtube_video_url, summary_type)
                 st.write(summary)
             except Exception as e:
-                st.error(f"Error summarizing news article: {e}")
+                st.error(f"Error summarizing YouTube video: {e}")
 
 # Implement sidebar for configurations
 with st.sidebar:
-    st.header("Article Summarizer Model Configuration")
+    st.header("YouTube Video Summarizer Model Configuration")
     
     # Model Selection
     llm_provider = st.selectbox(
@@ -109,7 +109,7 @@ with st.sidebar:
     if st.button("Initialize Article Summarizer", use_container_width=True):
         st.session_state.messages = []
         try:
-            st.session_state.summarizer = NewsSummarizer(
+            st.session_state.summarizer = YoutubeSummarizer(
                 llm_provider=llm_provider,
                 llm_name=llm_name,
                 llm_api_key=api_key,
@@ -119,17 +119,17 @@ with st.sidebar:
                 chunk_size=chunk_size,
                 chunk_overlap=chunk_overlap,
             )
-            st.success("Article Summarizer initialized successfully!")
+            st.success("YouTube Video Summarizer initialized successfully!")
         except Exception as e:
             print(e)
-            st.error(f"Error initializing Article Summarizer: {e}")
+            st.error(f"Error initializing YouTube Video Summarizer: {e}")
     
-    if st.button("Clear Article Summarizer", use_container_width=True):
+    if st.button("Clear YouTube Video Summarizer", use_container_width=True):
         if st.session_state.summarizer:
             st.session_state.messages = []
-            st.success("Article Summarizer cleared!")
+            st.success("YouTube Video Summarizer cleared!")
         else:
-            st.error("Please initialize the Article Summarizer first.")
+            st.error("Please initialize the YouTube Video Summarizer first.")
             
 # Display chat messages from history
 for msg in st.session_state.messages:
@@ -139,9 +139,9 @@ for msg in st.session_state.messages:
         message(msg["content"])
 
 # Chat input
-if prompt := st.chat_input("Ask anything about the article..."):
+if prompt := st.chat_input("Ask anything about the YouTube video..."):
     if not st.session_state.summarizer:
-        st.error("Please initialize the Article Summarizer first.", icon="‼️")
+        st.error("Please initialize the YouTube Video Summarizer first.", icon="‼️")
     else:
         # Display user message
         message(prompt, is_user=True)
@@ -167,7 +167,7 @@ if prompt := st.chat_input("Ask anything about the article..."):
                 st.error(f"Error during response generation: {str(e)}")
 
 # Audio Input
-audio_value = st.audio_input("Ask anything about the article...", sample_rate=48000)
+audio_value = st.audio_input("Ask anything about the YouTube video...", sample_rate=48000)
 if audio_value:
     audio_text = voice_processor.transcribe(audio_value)
     message(audio_text, is_user=True, key="audio_text")

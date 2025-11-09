@@ -21,6 +21,8 @@ class YoutubeSummarizer:
         embedding_provider: str=SUPPORTED_EMBEDDING_PROVIDERS[0],
         embedding_model_name: str=SUPPORTED_OPENAI_EMBEDDING_MODELS[0],
         embedding_api_key: Optional[str]=None,
+        chunk_size: int=1024,
+        chunk_overlap: int=200,
     ):
         """
         Initialize the YoutubeSummarizer with choice of model.
@@ -46,6 +48,8 @@ class YoutubeSummarizer:
             embedding_provider=self.embedding_provider,
             embedding_model_name=self.embedding_model_name,
             embedding_api_key=self.embedding_api_key,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
         )
 
         self.client = LLMClient(
@@ -81,7 +85,7 @@ class YoutubeSummarizer:
         """
         documents = self.download_and_process_video(url)
 
-        if summary_type == "detailed":
+        if summary_type == "Detailed":
             map_prompt_template = """
             Write a detailed summary of the following video transcript segments:
             
@@ -112,4 +116,14 @@ class YoutubeSummarizer:
         response = chain.invoke({"segments": documents})
 
         return response.content
+
+    def generate_response(self, question: str) -> str:
+        """
+        Generate a response to a question about the article.
+
+        Args:
+            question (str): The question to generate a response to.
+        """
+        response = self.client.qa_chain.invoke({"question": question})
+        return response["answer"]
         
