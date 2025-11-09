@@ -5,11 +5,10 @@ from langchain_core.embeddings import Embeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import OpenAIEmbeddings
 
-import config.settings as env_config
+from config.settings import env_config
 from utils.model_util import (
     SUPPORTED_EMBEDDING_PROVIDERS,
-    SUPPORTED_OPENAI_EMBEDDING_MODELS,
-    SUPPORTED_HUGGINGFACE_EMBEDDING_MODELS
+    SUPPORTED_OPENAI_EMBEDDING_MODELS
 )
 
 class EmbeddingClient:
@@ -44,7 +43,7 @@ class EmbeddingClient:
         """Create the embedding model instance based on the provider and model_name"""
         if self.provider == SUPPORTED_EMBEDDING_PROVIDERS[0]:
             return OpenAIEmbeddings(model=self.model_name, api_key=self.__api_key)
-        elif self.provider == "huggingface":
+        elif self.provider == SUPPORTED_EMBEDDING_PROVIDERS[1]:
             return HuggingFaceEmbeddings(model_name=self.model_name)
         else:
             raise ValueError(f"Unsupported embedding provider: {self.provider}")

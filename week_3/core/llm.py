@@ -9,12 +9,16 @@ from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 
 from config.settings import env_config
-from utils.model_util import SUPPORTED_GROQ_MODELS, SUPPORTED_OPENAI_MODELS
+from utils.model_util import (
+    SUPPORTED_GROQ_MODELS,
+    SUPPORTED_OPENAI_MODELS,
+    SUPPORTED_LLM_PROVIDERS
+)
 
 class LLMClient:
     def __init__(
         self,
-        provider: str="openai",
+        provider: str=SUPPORTED_LLM_PROVIDERS[0],
         model_name: str=SUPPORTED_OPENAI_MODELS[0],
         api_key: Optional[str]=None,
         store: Chroma=None
@@ -52,13 +56,13 @@ class LLMClient:
 
     def __initialize_llm(self) -> BaseChatModel:
         """Create the LLM instance based on the provider and model_name"""
-        if self.provider == "openai":
+        if self.provider == SUPPORTED_LLM_PROVIDERS[0]:
             return ChatOpenAI(
                 model=self.model_name,
                 api_key=self.__api_key,
                 temperature=0.2,
             )
-        elif self.provider == "groq":
+        elif self.provider == SUPPORTED_LLM_PROVIDERS[1]:
             return ChatGroq(
                 model=self.model_name,
                 api_key=self.__api_key,

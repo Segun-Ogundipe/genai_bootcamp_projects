@@ -1,11 +1,11 @@
 SUPPORTED_LLM_PROVIDERS = [
-        "openai",
-        "groq",
+        "OpenAI",
+        "Groq",
 ]
 
 SUPPORTED_EMBEDDING_PROVIDERS = [
-        "openai",
-        "huggingface",
+        "OpenAI",
+        "HuggingFace",
 ]
 
 SUPPORTED_GROQ_MODELS = [
