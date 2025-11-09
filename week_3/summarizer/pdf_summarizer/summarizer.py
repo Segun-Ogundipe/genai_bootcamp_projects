@@ -1,3 +1,5 @@
+import os
+import tempfile
 from typing import List, Optional
 
 from langchain_core.documents import Document
@@ -12,7 +14,7 @@ from utils.model_util import (
     SUPPORTED_OPENAI_EMBEDDING_MODELS
 )
 
-class UnstructuredSummarizer:
+class PDFSummarizer:
     def __init__(
         self,
         llm_provider: str=SUPPORTED_LLM_PROVIDERS[0],
@@ -21,6 +23,8 @@ class UnstructuredSummarizer:
         embedding_provider: str=SUPPORTED_EMBEDDING_PROVIDERS[0],
         embedding_model_name: str=SUPPORTED_OPENAI_EMBEDDING_MODELS[0],
         embedding_api_key: Optional[str]=None,
+        chunk_size: int=1024,
+        chunk_overlap: int=200,
     ):
         """
         Initialize the UnstructuredSummarizer with choice of model.
@@ -46,6 +50,8 @@ class UnstructuredSummarizer:
             embedding_provider=self.embedding_provider,
             embedding_model_name=self.embedding_model_name,
             embedding_api_key=self.embedding_api_key,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
         )
 
         self.client = LLMClient(
@@ -55,14 +61,17 @@ class UnstructuredSummarizer:
             store=self.store,
         )
 
-    def process_pdf_document(self, file_path: str) -> List[Document]:
+    def process_pdf_document(self, file: str) -> List[Document]:
         """
         Process a PDF document from a file path.
 
         Args:
             file_path (str): The path to the PDF document to process.
         """
-        documents = self.store.load_document(source=file_path, source_type="pdf")
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf:
+            temp_pdf.write(file.getvalue())
+            documents = self.store.load_document(source=temp_pdf.name, source_type="pdf")
+            os.unlink(temp_pdf.name)
 
         try:
             processed_documents = self.store.add_to_store(documents)
@@ -71,57 +80,17 @@ class UnstructuredSummarizer:
 
         return processed_documents
 
-    def process_txt_document(self, file_path: str) -> List[Document]:
-        """
-        Process a TXT document from a file path.
-
-        Args:
-            file_path (str): The path to the TXT document to process.
-        """
-        documents = self.store.load_document(source=file_path, source_type="txt")
-
-        try:
-            processed_documents = self.store.add_to_store(documents)
-        except Exception:
-            processed_documents = self.store.create_store(documents)
-
-        return processed_documents
-
-    def process_md_document(self, file_path: str) -> List[Document]:
-        """
-        Process a Markdown document from a file path.
-
-        Args:
-            file_path (str): The path to the Markdown document to process.
-        """
-        documents = self.store.load_document(source=file_path, source_type="md")
-
-        try:
-            processed_documents = self.store.add_to_store(documents)
-        except Exception:
-            processed_documents = self.store.create_store(documents)
-
-        return processed_documents
-
-    def summarize_document(self, file_path: str, doc_type: str="pdf", summary_type: str="concise") -> str:
+    def summarize_document(self, file: bytes, summary_type: str="concise") -> str:
         """
         Summarize a document from a file path.
 
         Args:
-            file_path (str): The path to the document to summarize.
-            doc_type (str): The type of the document ("pdf", "txt", "md"). Defaults to "pdf".
+            file (bytes): The file to summarize.
             summary_type (str): The type of summary to generate ("detailed" or "concise"). Defaults to "concise".
         """
-        if doc_type == "pdf":
-            documents = self.process_pdf_document(file_path)
-        elif doc_type == "txt":
-            documents = self.process_txt_document(file_path)
-        elif doc_type == "md":
-            documents = self.process_md_document(file_path)
-        else:
-            raise ValueError(f"Unsupported document type: {doc_type}")
+        documents = self.process_pdf_document(file)
 
-        if summary_type == "detailed":
+        if summary_type == "Detailed":
             map_prompt_template = """
             Write a detailed summary of the following document segments:
             
@@ -154,4 +123,14 @@ class UnstructuredSummarizer:
         response = chain.invoke({"segments": documents})
 
         return response.content
+
+    def generate_response(self, question: str) -> str:
+        """
+        Generate a response to a question about the article.
+
+        Args:
+            question (str): The question to generate a response to.
+        """
+        response = self.client.qa_chain.invoke({"question": question})
+        return response["answer"]
         

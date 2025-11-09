@@ -31,7 +31,7 @@ if "summarizer" not in st.session_state:
     
 # Title and Description
 st.title("Article Summarizer")
-st.markdown("Please configure the llm and embedding model in the sidebar. You can get one at https://console.groq.com/ for Groq API keys or https://platform.openai.com/account/api-keys for OpenAI API keys.")
+st.markdown("Please configure the llm and embedding model in the sidebar. You can get an API key at https://console.groq.com/ for Groq API keys or https://platform.openai.com/account/api-keys for OpenAI API keys.")
 with st.expander("Summarize News Article", expanded=True):
     st.markdown("Please enter the news article URL to get started.")
     news_article_url = st.text_input("News Article URL", placeholder="https://www.example.com")

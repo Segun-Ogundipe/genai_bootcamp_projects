@@ -18,7 +18,7 @@ st.markdown("""
     <ul style='display: inline-block; text-align: left;'>
         <li>📰 Summarize news articles and answer questions about them</li>
         <li>🎬 Summarize YouTube videos and explain their content</li>
-        <li>📄 Summarize documents (PDF, TXT, MD) and extract key insights</li>
+        <li>📄 Summarize PDF documents and extract key insights</li>
     </ul>
     <p><strong>Get started by selecting a feature from the navigation bar above!</strong></p>
 </div>
@@ -57,7 +57,7 @@ with col3:
     st.markdown("""
     <div style='background-color:#1a1a1a; padding:20px; border-radius:10px; color:#f0f0f0;'>
         <h3 style='color:#51cf66;'>📄 Documents</h3>
-        <p>Upload PDF, TXT, or MD files to get:</p>
+        <p>Upload PDF files to get:</p>
         <ul>
             <li>Document summary</li>
             <li>Key insights extraction</li>

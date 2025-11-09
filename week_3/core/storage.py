@@ -87,10 +87,6 @@ class VectorStore:
         """
         if source_type == "pdf":
             loader = PyPDFLoader(source)
-        elif source_type == "txt":
-            loader = TextLoader(source)
-        elif source_type == "md":
-            loader = UnstructuredMarkdownLoader(source)
         elif source_type == "youtube":
             loader = YoutubeLoader.from_youtube_url(source)
         elif source_type == "news":
