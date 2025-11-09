@@ -14,7 +14,7 @@ from langchain_core.vectorstores.base import VectorStoreRetriever
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from core.embeddings import EmbeddingClient
-from modules.news_summarizer.articleloader import ArticleLoader
+from summarizer.news_summarizer.articleloader import ArticleLoader
 from utils.model_util import (
     SUPPORTED_EMBEDDING_PROVIDERS,
     SUPPORTED_OPENAI_EMBEDDING_MODELS

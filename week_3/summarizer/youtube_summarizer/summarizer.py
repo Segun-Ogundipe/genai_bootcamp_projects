@@ -112,3 +112,4 @@ class YoutubeSummarizer:
         response = chain.invoke({"segments": documents})
 
         return response.content
+        

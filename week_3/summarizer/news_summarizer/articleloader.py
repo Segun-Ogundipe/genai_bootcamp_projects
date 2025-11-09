@@ -39,4 +39,3 @@ class ArticleLoader(BaseLoader):
             ]
         except Exception as e:
             raise RuntimeError(f"Error downloading and parsing the article: {e}")
-
