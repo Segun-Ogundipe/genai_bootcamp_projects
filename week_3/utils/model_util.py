@@ -3,6 +3,11 @@ SUPPORTED_LLM_PROVIDERS = [
         "groq",
 ]
 
+SUPPORTED_EMBEDDING_PROVIDERS = [
+        "openai",
+        "huggingface",
+]
+
 SUPPORTED_GROQ_MODELS = [
         "llama-3.1-8b-instant",
         "llama-3.3-70b-versatile",
