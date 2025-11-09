@@ -28,3 +28,10 @@ markdown
 
 # YouTube processing
 youtube-transcript-api
+
+# Audio processing
+openai-whisper
+gTTS
+
+# Streamlit UI
+streamlit

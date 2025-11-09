@@ -61,7 +61,7 @@ class LLMClient:
         elif self.provider == "groq":
             return ChatGroq(
                 model=self.model_name,
-                api_key=self.api_key,
+                api_key=self.__api_key,
                 temperature=0.2
             )
         else:
