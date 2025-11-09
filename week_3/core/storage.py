@@ -118,7 +118,7 @@ class VectorStore:
 
         return chunks
 
-    def create_store(self, documents: List[Document]) -> None:
+    def create_store(self, documents: List[Document]) -> List[Document]:
         """
         Create a new vector store from a list of documents
 
@@ -137,7 +137,9 @@ class VectorStore:
             persist_directory=PERSIST_DIRECTORY
         )
 
-    def add_to_store(self, documents: List[Document]) -> None:
+        return processed_documents
+
+    def add_to_store(self, documents: List[Document]) -> List[Document]:
         """
         Add documents to the existing vector store
 
@@ -153,6 +155,8 @@ class VectorStore:
 
         # Add the documents to the store
         self.store.add_documents(processed_documents)
+
+        return processed_documents
 
     def as_retriever(self, **kwargs) -> VectorStoreRetriever:
         """
