@@ -42,7 +42,7 @@ class YoutubeSummarizer:
         self.embedding_api_key = embedding_api_key
 
         self.store = VectorStore(
-            collection_name="youtube-summarizer",
+            collection_name="youtube-store",
             embedding_provider=self.embedding_provider,
             embedding_model_name=self.embedding_model_name,
             embedding_api_key=self.embedding_api_key,
