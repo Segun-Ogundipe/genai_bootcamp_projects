@@ -80,13 +80,14 @@ with st.sidebar:
         help="Choose a embedding model to use."
     )
 
-    embedding_api_key = st.text_input(
-        f"{embedding_provider} API Key",
-        type="password",
-        placeholder="*********",
-        help=f"Enter your {embedding_provider} API key here.",
-        key="embedding_api_key"
-    )
+    if embedding_provider == SUPPORTED_EMBEDDING_PROVIDERS[0]:
+        embedding_api_key = st.text_input(
+            f"{embedding_provider} API Key",
+            type="password",
+            placeholder="*********",
+            help=f"Enter your {embedding_provider} API key here.",
+            key="embedding_api_key"
+        )
 
     chunk_size = st.slider(
         "Chunk Size",
@@ -157,6 +158,8 @@ if prompt := st.chat_input("Ask anything about the YouTube video..."):
             try:
                 response = st.session_state.summarizer.generate_response(prompt)
                 message(response)
+                audio_bytes = voice_processor.text_to_speech(response)
+                st.audio(audio_bytes)
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
@@ -181,6 +184,8 @@ if audio_value:
         try:
             response = st.session_state.summarizer.generate_response(audio_text)
             message(response, key="audio_response")
+            audio_bytes = voice_processor.text_to_speech(response)
+            st.audio(audio_bytes)
             st.session_state.messages.append(
                 {
                     "role": "assistant",
