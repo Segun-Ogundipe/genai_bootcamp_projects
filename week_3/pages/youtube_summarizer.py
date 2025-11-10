@@ -107,7 +107,7 @@ with st.sidebar:
         help="The overlap between the chunks."
     )
 
-    if st.button("Initialize Article Summarizer", use_container_width=True):
+    if st.button("Initialize YouTube Video Summarizer", use_container_width=True):
         st.session_state.messages = []
         try:
             st.session_state.summarizer = YoutubeSummarizer(

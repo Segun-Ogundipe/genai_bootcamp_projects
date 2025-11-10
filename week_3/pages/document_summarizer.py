@@ -125,12 +125,12 @@ with st.sidebar:
             print(e)
             st.error(f"Error initializing Document Summarizer: {e}")
     
-    if st.button("Clear YouTube Video Summarizer", use_container_width=True):
+    if st.button("Clear Document Summarizer", use_container_width=True):
         if st.session_state.summarizer:
             st.session_state.messages = []
-            st.success("YouTube Video Summarizer cleared!")
+            st.success("Document Summarizer cleared!")
         else:
-            st.error("Please initialize the YouTube Video Summarizer first.")
+            st.error("Please initialize the Document Summarizer first.")
             
 # Display chat messages from history
 for msg in st.session_state.messages:
@@ -140,9 +140,9 @@ for msg in st.session_state.messages:
         message(msg["content"])
 
 # Chat input
-if prompt := st.chat_input("Ask anything about the YouTube video..."):
+if prompt := st.chat_input("Ask anything about the document..."):
     if not st.session_state.summarizer:
-        st.error("Please initialize the YouTube Video Summarizer first.", icon="‼️")
+        st.error("Please initialize the Document Summarizer first.", icon="‼️")
     else:
         # Display user message
         message(prompt, is_user=True)
@@ -170,7 +170,7 @@ if prompt := st.chat_input("Ask anything about the YouTube video..."):
                 st.error(f"Error during response generation: {str(e)}")
 
 # Audio Input
-audio_value = st.audio_input("Ask anything about the YouTube video...", sample_rate=48000)
+audio_value = st.audio_input("Ask anything about the document...", sample_rate=48000)
 if audio_value:
     audio_text = voice_processor.transcribe(audio_value)
     message(audio_text, is_user=True, key="audio_text")

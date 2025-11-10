@@ -56,7 +56,7 @@ class VectorStore:
         self.store = None
 
         # Create directory if it doesn't exist
-        os.makedirs(os.path.dirname(PERSIST_DIRECTORY), exist_ok=True)
+        os.makedirs(PERSIST_DIRECTORY, exist_ok=True)
 
         # Try to load existing store
         if os.path.exists(PERSIST_DIRECTORY):
