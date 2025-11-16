@@ -1,0 +1,15 @@
+[project]
+name = "week-4"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain-groq>=1.0.1",
+    "langchain-openai>=1.0.3",
+    "langgraph>=1.0.3",
+    "pydantic>=2.12.4",
+    "python-dotenv>=1.2.1",
+    "streamlit-chat>=0.1.1",
+    "watchdog>=6.0.0",
+]
